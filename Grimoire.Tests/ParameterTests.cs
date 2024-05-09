@@ -44,4 +44,34 @@ public class ParameterTests
 
         Assert.Throws<CommandFormatException>(() => parameter.Read(reader));
     }
+
+    [Fact]
+    public void StringParameter_Word()
+    {
+        var reader = new CommandReader("word another");
+
+        var parameter = new StringParameter(StringParameter.StringType.Word);
+
+        Assert.Equal("word", parameter.ReadArgument(reader));
+    }
+
+    [Fact]
+    public void StringParameter_QuotablePhrase()
+    {
+        var reader = new CommandReader("\"quoted\" another");
+
+        var parameter = new StringParameter(StringParameter.StringType.QuotablePhrase);
+
+        Assert.Equal("quoted", parameter.ReadArgument(reader));
+    }
+
+    [Fact]
+    public void StringParameter_GreedyPhrase()
+    {
+        var reader = new CommandReader("greedy string");
+
+        var parameter = new StringParameter(StringParameter.StringType.GreedyPhrase);
+
+        Assert.Equal("greedy string", parameter.ReadArgument(reader));
+    }
 }
