@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34902.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grimoire", "Grimoire\Grimoire.csproj", "{D5539A02-FF2A-407A-BBF4-63B28617E23D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grimoire", "Grimoire\Grimoire.csproj", "{D5539A02-FF2A-407A-BBF4-63B28617E23D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grimoire.Tests", "Grimoire.Tests\Grimoire.Tests.csproj", "{A3A24E21-0C4C-4916-851D-074DAC8EB9B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grimoire.Tests", "Grimoire.Tests\Grimoire.Tests.csproj", "{A3A24E21-0C4C-4916-851D-074DAC8EB9B8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grimoire.Minecraft", "Grimoire.Minecraft\Grimoire.Minecraft.csproj", "{41AF2D57-085D-46F7-8F59-2EA7CDEAA113}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grimoire.Minecraft.Tests", "Grimoire.Minecraft.Tests\Grimoire.Minecraft.Tests.csproj", "{CED2F658-8A6D-4446-80BE-133F2E28CA29}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{A3A24E21-0C4C-4916-851D-074DAC8EB9B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3A24E21-0C4C-4916-851D-074DAC8EB9B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3A24E21-0C4C-4916-851D-074DAC8EB9B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41AF2D57-085D-46F7-8F59-2EA7CDEAA113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41AF2D57-085D-46F7-8F59-2EA7CDEAA113}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41AF2D57-085D-46F7-8F59-2EA7CDEAA113}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41AF2D57-085D-46F7-8F59-2EA7CDEAA113}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CED2F658-8A6D-4446-80BE-133F2E28CA29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CED2F658-8A6D-4446-80BE-133F2E28CA29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CED2F658-8A6D-4446-80BE-133F2E28CA29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CED2F658-8A6D-4446-80BE-133F2E28CA29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

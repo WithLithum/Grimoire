@@ -69,6 +69,14 @@ public class CommandReader
         }
     }
 
+    public void SkipSingleWhitespace()
+    {
+        if (CanRead() && char.IsWhiteSpace(Peek()))
+        {
+            Skip();
+        }
+    }
+
     public int ReadInt32()
     {
         var start = Position;

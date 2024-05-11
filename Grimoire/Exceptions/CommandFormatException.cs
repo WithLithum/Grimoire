@@ -33,4 +33,9 @@ public class CommandFormatException : Exception
     {
         return new CommandFormatException(error, new CommandExceptionContext(reader.Position, reader.Command));
     }
+
+    public static CommandFormatException Create(CommandFormatError error, CommandReader reader, Exception innerException)
+    {
+        return new CommandFormatException(error, new CommandExceptionContext(reader.Position, reader.Command), innerException);
+    }
 }
