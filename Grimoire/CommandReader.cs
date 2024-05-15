@@ -1,7 +1,5 @@
 ﻿namespace Grimoire;
 using Grimoire.Exceptions;
-using System;
-using System.Diagnostics;
 using System.Text;
 
 public class CommandReader
@@ -178,6 +176,18 @@ public class CommandReader
             || c >= 'a' && c <= 'z'
             || c == '_' || c == '-'
             || c == '.' || c == '+';
+    }
+
+    public string ReadUnquotedString(Func<char, bool> isAllowed)
+    {
+        int start = Position;
+
+        while (CanRead() && isAllowed(Peek()))
+        {
+            Skip();
+        }
+
+        return Command.Substring(start, Position - start);
     }
 
     public string ReadUnquotedString()

@@ -17,14 +17,7 @@ public sealed class BlockPosParameter : CommandParameter<BlockPosition>
     public static BlockPositionComponent ReadPositionComponent(CommandReader reader)
     {
         // Read the component.
-        int start = reader.Position;
-
-        while (reader.CanRead() && IsAllowedInComponent(reader.Peek()))
-        {
-            reader.Skip();
-        }
-
-        var word = reader.Command[start..reader.Position];
+        var word = reader.ReadUnquotedString(IsAllowedInComponent);
 
         if (string.IsNullOrWhiteSpace(word))
         {
