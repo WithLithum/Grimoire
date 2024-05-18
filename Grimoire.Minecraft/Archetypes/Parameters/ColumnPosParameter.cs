@@ -10,6 +10,7 @@ public sealed class ColumnPosParameter : CommandParameter<ColumnPosition>
     public override ColumnPosition ReadArgument(CommandReader reader)
     {
         var x = BlockPosParameter.ReadPositionComponent(reader);
+        reader.SkipSingleWhitespace();
         var z = BlockPosParameter.ReadPositionComponent(reader);
 
         var result = new ColumnPosition(x, z);

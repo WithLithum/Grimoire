@@ -1,11 +1,6 @@
 ﻿namespace Grimoire.Minecraft.Models;
 
 using MineJason.Data.Coordinates;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 /// <summary>
 /// Defines a two-dimensional vector (X, Z) that represents an entire column of blocks in world space.
@@ -36,7 +31,7 @@ public readonly record struct ColumnPosition : IValidatable
 
     public bool IsValid()
     {
-        return X.Type == BlockPositionComponentType.Local
-            != (Z.Type == BlockPositionComponentType.Local);
+        return X.Type != BlockPositionComponentType.Local
+            == (Z.Type != BlockPositionComponentType.Local);
     }
 }

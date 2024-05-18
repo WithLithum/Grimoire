@@ -23,6 +23,22 @@ public class ParameterTests
     }
 
     [Fact]
+    public void ColumnPosParameter_Read_MixLocalAndRelative()
+    {
+        var reader = new CommandReader("~ ^10");
+
+        Assert.Throws<CommandFormatException>(() => new ColumnPosParameter().Read(reader));
+    }
+
+    [Fact]
+    public void ColumnPosParameter_Read()
+    {
+        var reader = new CommandReader("~ 20");
+
+        new ColumnPosParameter().Read(reader);
+    }
+
+    [Fact]
     public void ResourceLocation_Read()
     {
         var reader = new CommandReader("minecraft:stone");

@@ -53,7 +53,7 @@ public sealed class BlockPosParameter : CommandParameter<BlockPosition>
         var result = new BlockPosition(x, y, z);
         if (!result.IsValid())
         {
-            throw CommandFormatException.Create(MinecraftCommandErrors.InvalidBlockPosition,
+            throw CommandFormatException.Create(MinecraftCommandErrors.MixLocalAndWorld,
                 reader);
         }
 
