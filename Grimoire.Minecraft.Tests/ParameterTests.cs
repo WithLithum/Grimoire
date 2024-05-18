@@ -1,3 +1,4 @@
+using Grimoire.Minecraft.Models;
 using Grimoire.Minecraft.Registries;
 using NSubstitute;
 
@@ -85,6 +86,64 @@ public class ParameterTests
         // Act
         var ex = Record.Exception(() => parameter.ReadArgument(reader));
         
+        // Assert
+        Assert.IsType<CommandFormatException>(ex);
+    }
+    
+    [Fact]
+    public void Angle_Read_Absolute()
+    {
+        // Arrange
+        var reader = new CommandReader("123.45");
+        var parameter = new AngleParameter();
+        
+        // Act
+        var result = parameter.ReadArgument(reader);
+
+        // Assert
+        Assert.Equal(new Angle(123.45f, isRelative: false), 
+            result);
+    }
+    
+    [Fact]
+    public void Angle_Read_Relative()
+    {
+        // Arrange
+        var reader = new CommandReader("~67.89");
+        var parameter = new AngleParameter();
+        
+        // Act
+        var result = parameter.ReadArgument(reader);
+
+        // Assert
+        Assert.Equal(new Angle(67.89f, isRelative: true), 
+            result);
+    }
+    
+    [Fact]
+    public void Angle_Read_Invalid_OutOfRange()
+    {
+        // Arrange
+        var reader = new CommandReader("678.9");
+        var parameter = new AngleParameter();
+        
+        // Act
+        var ex = Record.Exception(() => parameter.ReadArgument(reader));
+
+        // Assert
+        Assert.IsType<CommandFormatException>(ex);
+    }
+    
+    [Fact]
+    public void Angle_Read_Invalid_FormatError()
+    {
+        // Arrange
+        var reader = new CommandReader(".....");
+        var parameter = new AngleParameter();
+        
+        // Act
+        var ex = Record.Exception(() => parameter.ReadArgument(reader));
+
         // Assert
         Assert.IsType<CommandFormatException>(ex);
     }
