@@ -1,4 +1,6 @@
-﻿namespace Grimoire.Minecraft;
+﻿using MineJason;
+
+namespace Grimoire.Minecraft;
 
 using Grimoire.Exceptions;
 
@@ -10,15 +12,19 @@ public static class MinecraftCommandErrors
     public static CommandFormatError ExpectedBlockPosComponent => new("MC0004", "Expected block position component");
     public static CommandFormatError ExpectedResourceLocation => new("MC0005", "Expected resource location");
     public static CommandFormatError InvalidResourceLocation => new("MC0006", "Invalid resource location");
-    public static CommandFormatError InvalidEntityAnchor => new("MC0007", "Unrecognized entity anchor");
 
     public static CommandFormatError ExpectedType(Type type)
     {
-        return new CommandFormatError("MC0008", $"Expected '{type.Name}'");
+        return new CommandFormatError("MC0007", $"Expected '{type.Name}'");
     }
 
     public static CommandFormatError InvalidType(Type type)
     {
-        return new CommandFormatError("MC0009", $"Invalid '{type.Name}'");
+        return new CommandFormatError("MC0008", $"Invalid '{type.Name}'");
+    }
+
+    public static CommandFormatError InvalidRegistryEntry(ResourceLocation registry, ResourceLocation entry)
+    {
+        return new CommandFormatError("MC0009", $"Registry '{registry}' does not contain entry '{entry}'");
     }
 }
