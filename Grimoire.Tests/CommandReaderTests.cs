@@ -1,4 +1,6 @@
-﻿namespace Grimoire.Tests;
+﻿using Grimoire.Inspection;
+
+namespace Grimoire.Tests;
 
 using Grimoire.Exceptions;
 
@@ -31,17 +33,27 @@ public class CommandReaderTests
     [Fact]
     public void ReadQuotedString_ExpectedBeginOfQuote()
     {
+        // Arrange
         var reader = new CommandReader("blah_blah_blah");
+        
+        // Act
+        var exc = Record.Exception(reader.ReadQuotedString);
 
-        Assert.Throws<CommandFormatException>(reader.ReadQuotedString);
+        // Assert
+        Assert.IsType<CommandFormatException>(exc);
     }
 
     [Fact]
     public void ReadQuotedString_ExpectedEndOfQuote()
     {
-        var reader = new CommandReader("\"quoted blah");
+        // Arrange
+        var reader = new CommandReader("\"i_am_quoted_blah");
+        
+        // Act
+        var exc = Record.Exception(reader.ReadQuotedString);
 
-        Assert.Throws<CommandFormatException>(reader.ReadQuotedString);
+        // Assert
+        Assert.IsType<CommandFormatException>(exc);
     }
 
     [Fact]
