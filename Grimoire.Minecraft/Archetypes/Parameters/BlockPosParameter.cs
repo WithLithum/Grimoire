@@ -1,4 +1,6 @@
-﻿namespace Grimoire.Minecraft.Archetypes.Parameters;
+﻿using Grimoire.Inspection;
+
+namespace Grimoire.Minecraft.Archetypes.Parameters;
 
 using Grimoire;
 using Grimoire.Archetypes.Parameters;
@@ -21,8 +23,8 @@ public sealed class BlockPosParameter : CommandParameter<BlockPosition>
 
         if (string.IsNullOrWhiteSpace(word))
         {
-            throw CommandFormatException.Create(MinecraftCommandErrors.ExpectedBlockPosComponent,
-                reader);
+            throw new CommandFormatException(InspectionDiscovery.Create(MinecraftInspections.ExpectedBlockPosComponent,
+                reader));
         }
 
         // Parse the component.
@@ -34,15 +36,14 @@ public sealed class BlockPosParameter : CommandParameter<BlockPosition>
         }
         catch (FormatException ex)
         {
-            throw CommandFormatException.Create(MinecraftCommandErrors.InvalidBlockPosComponent,
-                reader,
-                ex);
+            throw new CommandFormatException(InspectionDiscovery.Create(MinecraftInspections.InvalidBlockPosComponent,
+                reader), ex);
         }
 
         return result;
     }
 
-    public override BlockPosition ReadArgument(CommandReader reader)
+    public override BlockPosition ReadArgument(CommandReader reader, InspectionDiscoveryCollection discoveries)
     {
         var x = ReadPositionComponent(reader);
         reader.SkipSingleWhitespace();
@@ -53,8 +54,8 @@ public sealed class BlockPosParameter : CommandParameter<BlockPosition>
         var result = new BlockPosition(x, y, z);
         if (!result.IsValid())
         {
-            throw CommandFormatException.Create(MinecraftCommandErrors.MixLocalAndWorld,
-                reader);
+            discoveries.Add(InspectionDiscovery.Create(MinecraftInspections.MixLocalAndWorld,
+                reader));
         }
 
         return result;

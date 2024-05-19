@@ -4,7 +4,6 @@ using NSubstitute;
 
 namespace Grimoire.Minecraft.Tests;
 
-using Grimoire.Exceptions;
 using Grimoire.Minecraft.Archetypes.Parameters;
 using MineJason;
 
@@ -13,9 +12,15 @@ public class ParameterTests
     [Fact]
     public void BlockPosParameter_Read_MixLocalAndRelative()
     {
+        // Arrange
         var reader = new CommandReader("~ ~ ^2");
+        var parameter = new BlockPosParameter();
+        
+        // Act
+        var success = Inquest.DoesParse(reader, parameter);
 
-        Assert.Throws<CommandFormatException>(() => new BlockPosParameter().Read(reader));
+        // Assert
+        Assert.False(success);
     }
 
     [Fact]
@@ -26,18 +31,24 @@ public class ParameterTests
         var parameter = new BlockPosParameter();
 
         // Act
-        var ex = Record.Exception(() => parameter.Read(reader));
-        
+        var success = Inquest.DoesParse(reader, parameter);
+
         // Assert
-        Assert.Null(ex);
+        Assert.True(success);
     }
 
     [Fact]
     public void ColumnPosParameter_Read_MixLocalAndRelative()
     {
+        // Arrange
         var reader = new CommandReader("~ ^10");
+        var parameter = new ColumnPosParameter();
 
-        Assert.Throws<CommandFormatException>(() => new ColumnPosParameter().Read(reader));
+        // Act
+        var success = Inquest.DoesParse(reader, parameter);
+
+        // Assert
+        Assert.False(success);
     }
 
     [Fact]
@@ -48,10 +59,10 @@ public class ParameterTests
         var parameter = new ColumnPosParameter();
         
         // Act
-        var ex = Record.Exception(() => parameter.Read(reader));
-        
+        var success = Inquest.DoesParse(reader, parameter);
+
         // Assert
-        Assert.Null(ex);
+        Assert.True(success);
     }
 
     [Fact]
@@ -62,7 +73,8 @@ public class ParameterTests
         var parameter = new ResourceLocationParameter();
         
         // Act
-        var result = parameter.ReadArgument(reader);
+        // Disregard the discoveries. If any error, this will sure to fail.
+        var result = parameter.ReadArgument(reader, []);
 
         // Assert
         Assert.Equal(new ResourceLocation("minecraft", "stone"), 
@@ -84,10 +96,10 @@ public class ParameterTests
         var parameter = new RegistryParameter(substitute, registry);
 
         // Act
-        var ex = Record.Exception(() => parameter.ReadArgument(reader));
-        
+        var success = Inquest.DoesParse(reader, parameter);
+
         // Assert
-        Assert.IsType<CommandFormatException>(ex);
+        Assert.False(success);
     }
     
     [Fact]
@@ -98,7 +110,8 @@ public class ParameterTests
         var parameter = new AngleParameter();
         
         // Act
-        var result = parameter.ReadArgument(reader);
+        // Disregard the discoveries. If any error, this will sure to fail.
+        var result = parameter.ReadArgument(reader, []);
 
         // Assert
         Assert.Equal(new Angle(123.45f, isRelative: false), 
@@ -113,7 +126,8 @@ public class ParameterTests
         var parameter = new AngleParameter();
         
         // Act
-        var result = parameter.ReadArgument(reader);
+        // Disregard the discoveries. If any error, this will sure to fail.
+        var result = parameter.ReadArgument(reader, []);
 
         // Assert
         Assert.Equal(new Angle(67.89f, isRelative: true), 
@@ -128,10 +142,10 @@ public class ParameterTests
         var parameter = new AngleParameter();
         
         // Act
-        var ex = Record.Exception(() => parameter.ReadArgument(reader));
+        var success = Inquest.DoesParse(reader, parameter);
 
         // Assert
-        Assert.IsType<CommandFormatException>(ex);
+        Assert.False(success);
     }
     
     [Fact]
@@ -142,9 +156,9 @@ public class ParameterTests
         var parameter = new AngleParameter();
         
         // Act
-        var ex = Record.Exception(() => parameter.ReadArgument(reader));
+        var success = Inquest.DoesParse(reader, parameter);
 
         // Assert
-        Assert.IsType<CommandFormatException>(ex);
+        Assert.False(success);
     }
 }

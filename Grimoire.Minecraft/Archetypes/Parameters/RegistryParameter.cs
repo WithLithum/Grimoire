@@ -1,4 +1,5 @@
 ﻿using Grimoire.Exceptions;
+using Grimoire.Inspection;
 using Grimoire.Minecraft.Registries;
 using MineJason;
 
@@ -24,14 +25,21 @@ public class RegistryParameter : ResourceLocationParameter
     /// </summary>
     public ResourceLocation Registry { get; }
 
-    public override ResourceLocation ReadArgument(CommandReader reader)
+    public override ResourceLocation ReadArgument(CommandReader reader, InspectionDiscoveryCollection discoveries)
     {
-        var rl = base.ReadArgument(reader);
+        var rl = base.ReadArgument(reader, discoveries);
+        if (discoveries.Count != 0)
+        {
+            // Cease all reading and announce failure.
+            return default;
+        }
 
         if (!_handler.Exists(Registry, rl))
         {
-            throw CommandFormatException.Create(MinecraftCommandErrors.InvalidRegistryEntry(Registry, rl),
-                reader);
+            discoveries.Add(InspectionDiscovery.Create(MinecraftInspections.InvalidRegistryEntry,
+                reader,
+                Registry,
+                rl));
         }
 
         return rl;

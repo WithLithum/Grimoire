@@ -4,7 +4,7 @@ namespace Grimoire.Archetypes.Parameters;
 
 public abstract class CommandParameter<T> : CommandArchetype
 {
-    public abstract T ReadArgument(CommandReader reader, InspectionDiscoveryCollection discoveries);
+    public abstract T? ReadArgument(CommandReader reader, InspectionDiscoveryCollection discoveries);
 
     public override void Read(CommandReader reader, InspectionDiscoveryCollection discoveries)
     {

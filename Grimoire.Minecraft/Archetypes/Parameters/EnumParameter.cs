@@ -1,31 +1,37 @@
-﻿namespace Grimoire.Minecraft.Archetypes.Parameters;
+﻿using Grimoire.Inspection;
+
+namespace Grimoire.Minecraft.Archetypes.Parameters;
 
 using Grimoire;
 using Grimoire.Archetypes.Parameters;
 using Grimoire.Exceptions;
 
 public abstract class EnumParameter<T> : CommandParameter<T>
-    where T : notnull, Enum
+    where T : Enum
 {
     private static bool IsAllowed(char c)
     {
         return c > 'a' && c < 'z';
     }
 
-    public override T ReadArgument(CommandReader reader)
+    public override T? ReadArgument(CommandReader reader, InspectionDiscoveryCollection discoveries)
     {
         var word = reader.ReadUnquotedString(IsAllowed);
 
         if (string.IsNullOrWhiteSpace(word))
         {
-            throw CommandFormatException.Create(MinecraftCommandErrors.ExpectedType(typeof(T)),
-                reader);
+            discoveries.Add(InspectionDiscovery.Create(MinecraftInspections.ExpectedType,
+                reader,
+                typeof(T)));
+            return default;
         }
 
         if (!Enum.TryParse(typeof(T), word, true, out var result))
         {
-            throw CommandFormatException.Create(MinecraftCommandErrors.InvalidType(typeof(T)),
-                reader);
+            discoveries.Add(InspectionDiscovery.Create(MinecraftInspections.InvalidType,
+                reader,
+                typeof(T)));
+            return default;
         }
 
         return (T)result;
