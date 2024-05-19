@@ -1,4 +1,6 @@
-﻿namespace Grimoire;
+﻿using Grimoire.Inspection;
+
+namespace Grimoire;
 using Grimoire.Exceptions;
 using System.Text;
 
@@ -87,12 +89,16 @@ public class CommandReader
         var number = Command.Substring(start, Position - start);
         if (string.IsNullOrEmpty(number))
         {
-            throw CommandFormatException.Create(CommandFormatError.ExpectedInt32, this);
+            throw new CommandFormatException(InspectionDiscovery.Create(InspectionMessage.ExpectedObject,
+                this,
+                typeof(int)));
         }
 
         if (!int.TryParse(number, out var result))
         {
-            throw CommandFormatException.Create(CommandFormatError.InvalidInt32, this);
+            throw new CommandFormatException(InspectionDiscovery.Create(InspectionMessage.InvalidObject,
+                this,
+                typeof(int)));
         }
 
         return result;
@@ -110,12 +116,16 @@ public class CommandReader
         var number = Command.Substring(start, Position - start);
         if (string.IsNullOrEmpty(number))
         {
-            throw CommandFormatException.Create(CommandFormatError.ExpectedInt64, this);
+            throw new CommandFormatException(InspectionDiscovery.Create(InspectionMessage.ExpectedObject,
+                this,
+                typeof(long)));
         }
 
         if (!long.TryParse(number, out var result))
         {
-            throw CommandFormatException.Create(CommandFormatError.InvalidInt64, this);
+            throw new CommandFormatException(InspectionDiscovery.Create(InspectionMessage.InvalidObject,
+                this,
+                typeof(long)));
         }
 
         return result;
@@ -133,12 +143,16 @@ public class CommandReader
         var number = Command.Substring(start, Position - start);
         if (string.IsNullOrEmpty(number))
         {
-            throw CommandFormatException.Create(CommandFormatError.ExpectedDouble, this);
+            throw new CommandFormatException(InspectionDiscovery.Create(InspectionMessage.ExpectedObject,
+                this,
+                typeof(double)));
         }
 
         if (!double.TryParse(number, out var result))
         {
-            throw CommandFormatException.Create(CommandFormatError.InvalidDouble, this);
+            throw new CommandFormatException(InspectionDiscovery.Create(InspectionMessage.InvalidObject,
+                this,
+                typeof(double)));
         }
 
         return result;
@@ -156,12 +170,16 @@ public class CommandReader
         var number = Command.Substring(start, Position - start);
         if (string.IsNullOrEmpty(number))
         {
-            throw CommandFormatException.Create(CommandFormatError.ExpectedSingle, this);
+            throw new CommandFormatException(InspectionDiscovery.Create(InspectionMessage.ExpectedObject,
+                this,
+                typeof(float)));
         }
 
         if (!float.TryParse(number, out var result))
         {
-            throw CommandFormatException.Create(CommandFormatError.InvalidSingle, this);
+            throw new CommandFormatException(InspectionDiscovery.Create(InspectionMessage.InvalidObject,
+                this,
+                typeof(float)));
         }
 
         return result;
@@ -212,7 +230,9 @@ public class CommandReader
         char next = Peek();
         if (!IsQuotedStringStart(next))
         {
-            throw CommandFormatException.Create(CommandFormatError.ExpectedStartOfQuote, this);
+            throw new CommandFormatException(InspectionDiscovery.Create(
+                InspectionMessage.ExpectedStartOfQuote,
+                this));
         }
 
         Skip();
@@ -237,7 +257,10 @@ public class CommandReader
                 else
                 {
                     Position -= 1;
-                    throw CommandFormatException.Create(CommandFormatError.InvalidEscape, this);
+                    throw new CommandFormatException(InspectionDiscovery.Create(
+                        InspectionMessage.InvalidEscape,
+                        this,
+                        c));
                 }
             }
             else if (c == Escape)
@@ -254,7 +277,9 @@ public class CommandReader
             }
         }
 
-        throw CommandFormatException.Create(CommandFormatError.ExpectedEndOfQuote, this);
+        throw new CommandFormatException(InspectionDiscovery.Create(
+            InspectionMessage.ExpectedEndOfQuote,
+            this));
     }
 
     public string ReadString()
@@ -283,7 +308,10 @@ public class CommandReader
         var value = ReadString();
         if (string.IsNullOrEmpty(value))
         {
-            throw CommandFormatException.Create(CommandFormatError.ExpectedBoolean, this);
+            throw new CommandFormatException(InspectionDiscovery.Create(
+                InspectionMessage.ExpectedObject,
+                this,
+                typeof(bool)));
         }
 
         if (value == "true")
@@ -297,7 +325,10 @@ public class CommandReader
         else
         {
             Position = start;
-            throw CommandFormatException.Create(CommandFormatError.InvalidBoolean, this);
+            throw new CommandFormatException(InspectionDiscovery.Create(
+                InspectionMessage.InvalidObject,
+                this,
+                typeof(bool)));
         }
     }
 
@@ -312,8 +343,10 @@ public class CommandReader
     {
         if (!CanRead() || Peek() != c)
         {
-            throw CommandFormatException.Create(CommandFormatError.ExpectedCharacter(c),
-                this);
+            throw new CommandFormatException(InspectionDiscovery.Create(
+                InspectionMessage.ExpectedObject,
+                this,
+                c));
         }
 
         Skip();

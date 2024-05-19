@@ -1,4 +1,6 @@
-﻿namespace Grimoire.Archetypes.Parameters;
+﻿using Grimoire.Inspection;
+
+namespace Grimoire.Archetypes.Parameters;
 
 using Grimoire.Exceptions;
 
@@ -13,22 +15,18 @@ public sealed class SingleParameter : CommandParameter<float>
     public float? Minimum { get; set; }
     public float? Maximum { get; set; }
 
-    public override float ReadArgument(CommandReader reader)
+    public override float ReadArgument(CommandReader reader, InspectionDiscoveryCollection discoveries)
     {
         var retVal = reader.ReadSingle();
 
-        if (Minimum.HasValue && retVal < Minimum.Value)
+        if (retVal < Minimum || retVal > Maximum)
         {
-            throw CommandFormatException.Create(CommandFormatError.DoubleLessThanMinimum(Minimum.Value),
-                reader);
+            discoveries.Add(InspectionDiscovery.Create(InspectionMessage.InvalidObject,
+                reader,
+                typeof(long)));
+            return default;
         }
-
-        if (Maximum.HasValue && retVal > Maximum.Value)
-        {
-            throw CommandFormatException.Create(CommandFormatError.DoubleLessThanMinimum(Maximum.Value),
-                reader);
-        }
-
+        
         return retVal;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Grimoire.Exceptions;
+using Grimoire.Inspection;
 
 namespace Grimoire.Archetypes;
 
@@ -18,14 +19,16 @@ public class LiteralArchetype : CommandArchetype
     /// </summary>
     public string Literal { get; }
     
-    public override void Read(CommandReader reader)
+    public override void Read(CommandReader reader, InspectionDiscoveryCollection discoveries)
     {
         var word = reader.ReadUnquotedString();
 
         if (!word.Equals(Literal, StringComparison.Ordinal))
         {
-            throw CommandFormatException.Create(CommandFormatError.ExpectedWord(Literal),
-                reader);
+            discoveries.Add(InspectionDiscovery.Create(InspectionMessage.ExpectedObjectButFound,
+                reader,
+                Literal,
+                word));
         }
     }
 }

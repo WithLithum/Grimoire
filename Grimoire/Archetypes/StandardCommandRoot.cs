@@ -1,4 +1,6 @@
-﻿namespace Grimoire.Archetypes;
+﻿using Grimoire.Inspection;
+
+namespace Grimoire.Archetypes;
 
 using Grimoire.Exceptions;
 
@@ -22,13 +24,16 @@ public class StandardCommandRoot : CommandArchetype
 
     public IList<CommandArchetype> Members { get; } = [];
 
-    public override void Read(CommandReader reader)
+    public override void Read(CommandReader reader, InspectionDiscoveryCollection discoveries)
     {
         var cmdName = reader.ReadUnquotedString();
         if (cmdName != Name)
         {
-            throw CommandFormatException.Create(CommandFormatError.ExpectedWord(Name),
-                reader);
+            discoveries.Add(InspectionDiscovery.Create(InspectionMessage.ExpectedObjectButFound,
+                reader,
+                Name,
+                cmdName));
+            return;
         }
 
         foreach (var member in Members)
@@ -38,7 +43,7 @@ public class StandardCommandRoot : CommandArchetype
                 reader.Skip();
             }
 
-            member.Read(reader);
+            member.Read(reader, discoveries);
         }
     }
 }

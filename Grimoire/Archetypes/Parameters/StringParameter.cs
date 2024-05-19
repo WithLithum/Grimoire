@@ -1,4 +1,6 @@
-﻿namespace Grimoire.Archetypes.Parameters;
+﻿using Grimoire.Inspection;
+
+namespace Grimoire.Archetypes.Parameters;
 
 public class StringParameter : CommandParameter<string>
 {
@@ -25,7 +27,7 @@ public class StringParameter : CommandParameter<string>
 
     public StringType Type { get; set; }
 
-    public override string ReadArgument(CommandReader reader)
+    public override string ReadArgument(CommandReader reader, InspectionDiscoveryCollection discoveries)
     {
         if (Type == StringType.GreedyPhrase)
         {

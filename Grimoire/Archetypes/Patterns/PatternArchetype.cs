@@ -1,4 +1,6 @@
-﻿namespace Grimoire.Archetypes.Patterns;
+﻿using Grimoire.Inspection;
+
+namespace Grimoire.Archetypes.Patterns;
 
 public class PatternArchetype : CommandArchetype
 {
@@ -12,11 +14,11 @@ public class PatternArchetype : CommandArchetype
     
     public CommandArchetypeCollection Archetypes { get; } = new();
     
-    public override void Read(CommandReader reader)
+    public override void Read(CommandReader reader, InspectionDiscoveryCollection discoveries)
     {
         foreach (var archetype in Archetypes)
         {
-            archetype.Read(reader);
+            archetype.Read(reader, discoveries);
         }
     }
 }
