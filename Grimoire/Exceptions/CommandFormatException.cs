@@ -1,41 +1,33 @@
-﻿namespace Grimoire.Exceptions;
+﻿using Grimoire.Inspection;
+
+namespace Grimoire.Exceptions;
 using System;
 
+/// <summary>
+/// An exception thrown when a fatal inspection discovery occurred and the parsing cannot continue.
+/// </summary>
 public class CommandFormatException : Exception
 {
     public CommandFormatException()
     {
     }
 
-    public CommandFormatException(CommandFormatError error, CommandExceptionContext context)
-        : base(CreateMessage(error, context))
+    public CommandFormatException(InspectionDiscovery discovery)
+        : base(CreateMessage(discovery))
     {
-        Error = error;
-        Context = context;
+        Discovery = discovery;
     }
 
-    public CommandFormatException(CommandFormatError error, CommandExceptionContext context, Exception? innerException)
-        : base(CreateMessage(error, context), innerException)
+    public CommandFormatException(InspectionDiscovery discovery, Exception? innerException)
+        : base(CreateMessage(discovery), innerException)
     {
-        Error = error;
-        Context = context;
+        Discovery = discovery;
     }
 
-    public CommandFormatError Error { get; }
-    public CommandExceptionContext Context { get; }
+    public InspectionDiscovery Discovery { get; }
 
-    private static string CreateMessage(CommandFormatError error, CommandExceptionContext context)
+    private static string CreateMessage(InspectionDiscovery discovery)
     {
-        return $"(pos. {context.Position}) {error.Identifier}: {error.Message}";
-    }
-
-    public static CommandFormatException Create(CommandFormatError error, CommandReader reader)
-    {
-        return new CommandFormatException(error, new CommandExceptionContext(reader.Position, reader.Command));
-    }
-
-    public static CommandFormatException Create(CommandFormatError error, CommandReader reader, Exception innerException)
-    {
-        return new CommandFormatException(error, new CommandExceptionContext(reader.Position, reader.Command), innerException);
+        return $"(pos. {discovery.Context.Position}) {discovery.GetMessage()}";
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Grimoire.Minecraft.Archetypes.Parameters;
+﻿using Grimoire.Inspection;
+
+namespace Grimoire.Minecraft.Archetypes.Parameters;
 
 using Grimoire;
 using Grimoire.Archetypes.Parameters;
@@ -7,7 +9,7 @@ using Grimoire.Minecraft.Models;
 
 public sealed class ColumnPosParameter : CommandParameter<ColumnPosition>
 {
-    public override ColumnPosition ReadArgument(CommandReader reader)
+    public override ColumnPosition ReadArgument(CommandReader reader, InspectionDiscoveryCollection discoveries)
     {
         var x = BlockPosParameter.ReadPositionComponent(reader);
         reader.SkipSingleWhitespace();
@@ -16,8 +18,8 @@ public sealed class ColumnPosParameter : CommandParameter<ColumnPosition>
         var result = new ColumnPosition(x, z);
         if (!result.IsValid())
         {
-            throw CommandFormatException.Create(MinecraftCommandErrors.MixLocalAndWorld,
-                reader);
+            discoveries.Add(InspectionDiscovery.Create(MinecraftInspections.MixLocalAndWorld,
+                reader));
         }
 
         return result;

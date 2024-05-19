@@ -1,5 +1,6 @@
 ﻿namespace Grimoire.Exceptions;
 
+[Obsolete("Use InspectionMessage instead.")]
 public readonly record struct CommandFormatError
 {
     public CommandFormatError(string identifier, string message)
@@ -11,7 +12,7 @@ public readonly record struct CommandFormatError
     public string Identifier { get; }
 
     public string Message { get; }
-
+    
     public static CommandFormatError ExpectedInt32 => new("CMD0001", "Expected Int32 but found nothing");
     public static CommandFormatError InvalidInt32 => new("CMD0002", "Invalid Int32");
     public static CommandFormatError ExpectedInt64 => new("CMD0003", "Expected Int64 but found nothing");

@@ -1,4 +1,6 @@
-﻿namespace Grimoire.Minecraft.Archetypes.Parameters;
+﻿using Grimoire.Inspection;
+
+namespace Grimoire.Minecraft.Archetypes.Parameters;
 
 using Grimoire;
 using Grimoire.Archetypes.Parameters;
@@ -16,18 +18,19 @@ public class ResourceLocationParameter : CommandParameter<ResourceLocation>
             || c == '/' || c == ':';
     }
 
-    public override ResourceLocation ReadArgument(CommandReader reader)
+    public override ResourceLocation ReadArgument(CommandReader reader, InspectionDiscoveryCollection discoveries)
     {
         var word = reader.ReadUnquotedString(IsAllowedChar);
 
         if (string.IsNullOrWhiteSpace(word))
         {
-            throw CommandFormatException.Create(MinecraftCommandErrors.ExpectedResourceLocation, reader);
+            discoveries.Add(MinecraftInspections.DiscoverExpectedType(reader, typeof(ResourceLocation)));
+            return default;
         }
 
         if (!ResourceLocation.TryParse(word, out var resourceLocation))
         {
-            throw CommandFormatException.Create(MinecraftCommandErrors.InvalidResourceLocation, reader);
+            discoveries.Add(MinecraftInspections.DiscoverInvalidType(reader, typeof(ResourceLocation)));
         }
 
         return resourceLocation;

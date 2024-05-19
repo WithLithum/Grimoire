@@ -11,6 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grimoire.Minecraft", "Grimo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grimoire.Minecraft.Tests", "Grimoire.Minecraft.Tests\Grimoire.Minecraft.Tests.csproj", "{CED2F658-8A6D-4446-80BE-133F2E28CA29}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{C852460C-26C0-4009-82D6-FAEBE3C0FBD5}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

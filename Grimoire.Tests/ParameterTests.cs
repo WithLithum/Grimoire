@@ -8,70 +8,98 @@ public class ParameterTests
     [Fact]
     public void Int32Parameter_UpperLimit()
     {
+        // Arrange
         var reader = new CommandReader("99999");
-
         var parameter = new Int32Parameter(null, 10000);
 
-        Assert.Throws<CommandFormatException>(() => parameter.Read(reader));
+        // Act
+        var success = Inquest.DoesParse(reader, parameter);
+
+        // Assert
+        Assert.False(success);
     }
 
     [Fact]
     public void Int32Parameter_LowerLimit()
     {
+        // Arrange
         var reader = new CommandReader("10");
-
         var parameter = new Int32Parameter(100, null);
 
-        Assert.Throws<CommandFormatException>(() => parameter.Read(reader));
+        // Act
+        var success = Inquest.DoesParse(reader, parameter);
+
+        // Assert
+        Assert.False(success);
     }
 
     [Fact]
     public void Int64Parameter_UpperLimit()
     {
+        // Arrange
         var reader = new CommandReader("100000000000");
-
         var parameter = new Int64Parameter(null, 10000000);
 
-        Assert.Throws<CommandFormatException>(() => parameter.Read(reader));
+        // Act
+        var success = Inquest.DoesParse(reader, parameter);
+
+        // Assert
+        Assert.False(success);
     }
 
     [Fact]
     public void Int64Parameter_LowerLimit()
     {
+        // Arrange
         var reader = new CommandReader("10");
-
         var parameter = new Int64Parameter(100, null);
 
-        Assert.Throws<CommandFormatException>(() => parameter.Read(reader));
+        // Act
+        var success = Inquest.DoesParse(reader, parameter);
+
+        // Assert
+        Assert.False(success);
     }
 
     [Fact]
     public void StringParameter_Word()
     {
+        // Arrange
         var reader = new CommandReader("word another");
+        var parameter = new StringParameter();
 
-        var parameter = new StringParameter(StringParameter.StringType.Word);
-
-        Assert.Equal("word", parameter.ReadArgument(reader));
+        // Act
+        var result = parameter.ReadArgument(reader, []);
+        
+        // Assert
+        Assert.Equal("word", result);
     }
 
     [Fact]
     public void StringParameter_QuotablePhrase()
     {
+        // Arrange
         var reader = new CommandReader("\"quoted\" another");
-
         var parameter = new StringParameter(StringParameter.StringType.QuotablePhrase);
 
-        Assert.Equal("quoted", parameter.ReadArgument(reader));
+        // Act
+        var result = parameter.ReadArgument(reader, []);
+        
+        // Assert
+        Assert.Equal("quoted", result);
     }
 
     [Fact]
     public void StringParameter_GreedyPhrase()
     {
+        // Arrange
         var reader = new CommandReader("greedy string");
-
         var parameter = new StringParameter(StringParameter.StringType.GreedyPhrase);
 
-        Assert.Equal("greedy string", parameter.ReadArgument(reader));
+        // Act
+        var result = parameter.ReadArgument(reader, []);
+        
+        // Assert
+        Assert.Equal("greedy string", result);
     }
 }

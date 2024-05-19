@@ -1,4 +1,6 @@
-﻿namespace Grimoire.Minecraft.Archetypes.Parameters;
+﻿using Grimoire.Inspection;
+
+namespace Grimoire.Minecraft.Archetypes.Parameters;
 
 using Grimoire;
 using Grimoire.Archetypes.Parameters;
@@ -15,20 +17,20 @@ public class GuidParameter : CommandParameter<Guid>
             || c == '-';
     }
 
-    public override Guid ReadArgument(CommandReader reader)
+    public override Guid ReadArgument(CommandReader reader, InspectionDiscoveryCollection discoveries)
     {
         var word = reader.ReadUnquotedString(IsAllowed);
 
         if (string.IsNullOrWhiteSpace(word))
         {
-            throw CommandFormatException.Create(MinecraftCommandErrors.ExpectedType(typeof(Guid)),
-                reader);
+            discoveries.Add(MinecraftInspections.DiscoverExpectedType(reader, typeof(Guid)));
+            return Guid.Empty;
         }
 
         if (!word.Contains('-') || !Guid.TryParse(word, out var result))
         {
-            throw CommandFormatException.Create(MinecraftCommandErrors.InvalidType(typeof(Guid)),
-                reader);
+            discoveries.Add(MinecraftInspections.DiscoverInvalidType(reader, typeof(Guid)));
+            return Guid.Empty;
         }
 
         return result;

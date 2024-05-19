@@ -1,6 +1,6 @@
-﻿namespace Grimoire.Archetypes.Parameters;
+﻿using Grimoire.Inspection;
 
-using Grimoire.Exceptions;
+namespace Grimoire.Archetypes.Parameters;
 
 public sealed class DoubleParameter : CommandParameter<double>
 {
@@ -13,20 +13,16 @@ public sealed class DoubleParameter : CommandParameter<double>
     public double? Minimum { get; set; }
     public double? Maximum { get; set; }
 
-    public override double ReadArgument(CommandReader reader)
+    public override double ReadArgument(CommandReader reader, InspectionDiscoveryCollection discoveries)
     {
         var retVal = reader.ReadDouble();
 
-        if (Minimum.HasValue && retVal < Minimum.Value)
+        if (retVal < Minimum || retVal > Maximum)
         {
-            throw CommandFormatException.Create(CommandFormatError.DoubleLessThanMinimum(Minimum.Value),
-                reader);
-        }
-
-        if (Maximum.HasValue && retVal > Maximum.Value)
-        {
-            throw CommandFormatException.Create(CommandFormatError.DoubleLessThanMinimum(Maximum.Value),
-                reader);
+            discoveries.Add(InspectionDiscovery.Create(InspectionMessage.InvalidObject,
+                reader,
+                typeof(double)));
+            return default;
         }
 
         return retVal;
